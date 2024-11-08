@@ -16,7 +16,7 @@ class SalesReportController extends Controller
         $endDate = $request->input('end_date', Carbon::now()->endOfMonth()->format('Y-m-d'));
 
         // Mengambil data penjualan dalam periode tertentu
-        $sales = Sale::whereBetween('sale_date', [$startDate, $endDate])->get();
+        $sales = Sale::whereBetween('created_at', [$startDate, $endDate])->get();
 
         // Menyusun data laporan
         $totalSales = $sales->sum('total_amount');

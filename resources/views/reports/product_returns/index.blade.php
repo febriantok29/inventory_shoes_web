@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Sales Report')
+@section('title', 'Product Return Report')
 
 @section('content')
     <div class="container">
-        <h1>Sales Report</h1>
+        <h1>Product Return Report</h1>
 
         <!-- Form untuk filter laporan berdasarkan tanggal -->
-        <form method="GET" action="{{ route('reports.sales_report') }}" class="form-inline mb-4">
+        <form method="GET" action="{{ route('product_return_report.index') }}" class="form-inline mb-4">
             <div class="form-group mr-2">
                 <label for="start_date" class="mr-1">Start Date</label>
                 <input type="date" id="start_date" name="start_date" class="form-control" value="{{ $startDate }}">
@@ -24,44 +24,40 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Total Sales</h5>
-                        <p class="card-text">{{ number_format($totalSales, 2) }}</p>
+                        <h5 class="card-title">Total Returns</h5>
+                        <p class="card-text">{{ $totalReturns }}</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Average Sales</h5>
-                        <p class="card-text">{{ number_format($averageSales, 2) }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Transactions</h5>
-                        <p class="card-text">{{ $transactionCount }}</p>
+                        <h5 class="card-title">Total Quantity Returned</h5>
+                        <p class="card-text">{{ $totalQuantityReturned }}</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Tabel Transaksi Penjualan -->
+        <!-- Tabel Transaksi Retur Produk -->
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Date</th>
+                    <th>Return Date</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
                     <th>Customer Name</th>
-                    <th>Total Amount</th>
+                    <th>Return Reason</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($sales as $sale)
+                @foreach ($returns as $return)
                     <tr>
-                        <td>{{ $sale->sale_date }}</td>
-                        <td>{{ $sale->customer_name }}</td>
-                        <td>{{ number_format($sale->total_amount, 2) }}</td>
+                        <td>{{ $return->return_date }}</td>
+                        <td>{{ $return->product_name }}</td>
+                        <td>{{ $return->quantity }}</td>
+                        <td>{{ $return->customer_name }}</td>
+                        <td>{{ $return->return_reason }}</td>
                     </tr>
                 @endforeach
             </tbody>
