@@ -2,16 +2,18 @@
 
 namespace App\Models\Master;
 
+use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Product extends Model
+class Product extends BaseModel
 {
     use HasFactory, SoftDeletes;
 
     protected $table = 'm_products';
-    protected $fillable = ['name', 'code', 'price', 'stock', 'product_category_id', 'supplier_id'];
+    protected $fillable = ['code', 'name', 'size', 'color', 'image_path', 'description', 'price', 'stock', 'product_category_id', 'supplier_id'];
+    protected $dates = ['deleted_at'];
 
     public function category()
     {

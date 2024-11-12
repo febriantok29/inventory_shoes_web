@@ -38,6 +38,7 @@
             </div>
 
             <div class="text-center mt-4">
+                <a href="{{ route('product_categories.index') }}" class="btn btn-secondary">Batal</a>
                 <button type="submit" class="btn btn-success px-5">Simpan</button>
             </div>
         </form>

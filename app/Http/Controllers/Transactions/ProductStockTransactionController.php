@@ -2,62 +2,80 @@
 
 namespace App\Http\Controllers\Transactions;
 
+use Illuminate\Http\Request;
+use App\Models\Master\Product;
 use App\Http\Controllers\Controller;
 use App\Models\Transactions\ProductStockTransaction;
-use Illuminate\Http\Request;
 
 class ProductStockTransactionController extends Controller
 {
+    const TYPE_PURCHASE = 'IN';
+    const TYPE_SALE = 'OUT';
+
     public function index()
     {
         $stockTransactions = ProductStockTransaction::all();
         return view('transactions.product_stock.index', compact('stockTransactions'));
     }
 
-    public function create()
+    public function addPurchase(int $productId, int $quantity, string $note = null)
     {
-        return view('transactions.product_stock.create');
+        $product = Product::find($productId);
+
+        if (!$product) {
+            throw new \Exception('Sepatu tidak ditemukan.');
+        }
+
+        $productStockTransaction = new ProductStockTransaction();
+        $productStockTransaction->product_id = $productId;
+        $productStockTransaction->type = self::TYPE_PURCHASE;
+        $productStockTransaction->quantity = $quantity;
+        $productStockTransaction->description = $note;
+        $productStockTransaction->save();
+
+        $product->increment('stock', $quantity);
+        $product->save();
+
+        return $productStockTransaction->id;
+    }
+
+    public function addSale(int $productId, int $quantity, string $note = null)
+    {
+        $product = Product::find($productId);
+
+        if ($product->stock < $quantity) {
+            throw new \Exception('Stock ' . $product->name . ' tidak mencukupi, stock saat ini: ' . $product->stock);
+        }
+
+        $productStockTransaction = new ProductStockTransaction();
+        $productStockTransaction->product_id = $productId;
+        $productStockTransaction->type = self::TYPE_SALE;
+        $productStockTransaction->quantity = $quantity;
+        $productStockTransaction->description = $note;
+        $productStockTransaction->save();
+
+        $product->decrement('stock', $quantity);
+        $product->save();
+
+        return $productStockTransaction->id;
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'product_name' => 'required|string|max:255',
+            'product_id' => 'required|exists:m_products,id',
+            'type' => 'required|in:IN,OUT',
             'quantity' => 'required|integer|min:1',
-            'transaction_type' => 'required|in:addition,reduction',
-            'transaction_date' => 'required|date',
+            'description' => 'nullable|string',
         ]);
 
         ProductStockTransaction::create($request->all());
-        return redirect()->route('product_stock_transactions.index')->with('success', 'Stock transaction recorded successfully.');
+
+        return redirect()->route('product_stock_transactions.index')->with('success', 'Berhasil menambahkan stok sepatu.');
     }
 
     public function show(ProductStockTransaction $productStockTransaction)
     {
         return view('transactions.product_stock.show', compact('productStockTransaction'));
-    }
-
-    public function edit(ProductStockTransaction $productStockTransaction)
-    {
-        return view('transactions.product_stock.edit', compact('productStockTransaction'));
-    }
-
-    public function update(Request $request, ProductStockTransaction $productStockTransaction)
-    {
-        $request->validate([
-            'product_name' => 'required|string|max:255',
-            'quantity' => 'required|integer|min:1',
-            'transaction_type' => 'required|in:addition,reduction',
-            'transaction_date' => 'required|date',
-        ]);
-
-        $productStockTransaction->update($request->all());
-        return redirect()->route('product_stock_transactions.index')->with('success', 'Stock transaction updated successfully.');
-    }
-
-    public function destroy(ProductStockTransaction $productStockTransaction)
-    {
-        $productStockTransaction->delete();
-        return redirect()->route('product_stock_transactions.index')->with('success', 'Stock transaction deleted successfully.');
     }
 }

@@ -202,9 +202,9 @@
                         <li class="nav-item">
                             <a href="{{ route('login') }}" class="nav-link">Masuk</a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('register') }}" class="nav-link">Daftar</a>
-                        </li>
+                        </li> --}}
                     @else
                         <li class="nav-item">
                             <a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a>
@@ -307,10 +307,10 @@
         </div>
 
         <!-- CTA Section -->
-        <div class="cta">
+        {{-- <div class="cta">
             <h2>Mulai Sekarang dan Kelola Inventori Anda Lebih Mudah!</h2>
             <a href="{{ route('register') }}" class="btn btn-light btn-lg btn-main">Daftar Sekarang</a>
-        </div>
+        </div> --}}
 
         <!-- Footer -->
         <footer>

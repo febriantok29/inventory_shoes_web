@@ -9,7 +9,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>No</th>
+                    <th>Invoice</th>
                     <th>Nama Pelanggan</th>
                     <th>Jumlah Item</th>
                     <th>Total Harga</th>
@@ -20,20 +20,14 @@
             <tbody>
                 @foreach ($sales as $sale)
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $sale->invoice }}</td>
                         <td>{{ $sale->customer_name }}</td>
                         <td>{{ $sale->total_amount }}</td>
-                        <td>{{ number_format($sale->total_price, 2) }}</td>
-                        <td>{{ $sale->created_at->format('d M Y') }}</td>
+                        <td> Rp {{ number_format($sale->total_price) }}</td>
+                        <td>{{ $sale->transaction_date == null || $sale->transaction_date == '' ? '-' : '' . date('l, d F Y', strtotime($sale->transaction_date)) }}
+                        </td>
                         <td>
                             <a href="{{ route('sales.show', $sale->id) }}" class="btn btn-info btn-sm">Lihat</a>
-                            <a href="{{ route('sales.edit', $sale->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('sales.destroy', $sale->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Yakin ingin menghapus penjualan ini?')">Hapus</button>
-                            </form>
                         </td>
                     </tr>
                 @endforeach

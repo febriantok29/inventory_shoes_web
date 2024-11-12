@@ -2,20 +2,16 @@
 
 @section('content')
     <div class="container">
-        <h1>Product Stock Transactions</h1>
-        <a href="{{ route('product_stock_transactions.create') }}" class="btn btn-primary mb-3">Add New Stock Transaction</a>
-
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
+        <h1>Monitoring Stock</h1>
 
         <table class="table">
             <thead>
                 <tr>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Transaction Type</th>
-                    <th>Transaction Date</th>
+                    <th>Sepatu</th>
+                    <th>Tanggal Transaksi</th>
+                    <th>Tipe Transaksi</th>
+                    <th>Kuantitas</th>
+                    <th>Catatan</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -29,14 +25,6 @@
                         <td>
                             <a href="{{ route('product_stock_transactions.show', $transaction) }}"
                                 class="btn btn-info btn-sm">View</a>
-                            <a href="{{ route('product_stock_transactions.edit', $transaction) }}"
-                                class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('product_stock_transactions.destroy', $transaction) }}" method="POST"
-                                class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
                         </td>
                     </tr>
                 @endforeach

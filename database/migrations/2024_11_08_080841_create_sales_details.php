@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('sales_id'); // Relasi ke t_sales
             $table->unsignedBigInteger('product_id'); // Relasi ke m_products
+            $table->unsignedBigInteger('transaction_stock_id')->nullable()->comment('Log transaksi stok yang terkait');
             $table->integer('quantity')->default(1);
             $table->decimal('price', 15, 2);
             $table->decimal('total', 15, 2);
@@ -28,6 +29,7 @@ return new class extends Migration
             // Foreign keys
             $table->foreign('sales_id')->references('id')->on('t_sales')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('m_products')->onDelete('cascade');
+            $table->foreign('transaction_stock_id')->references('id')->on('t_product_stock_transactions')->onDelete('set null');
         });
     }
 

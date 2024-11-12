@@ -1,11 +1,13 @@
 <?php
+
 namespace App\Models\Transactions;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
+use App\Models\Transactions\Sale;
 use App\Models\Master\Product;
 
-class SaleDetail extends Model
+class SaleDetail extends BaseModel
 {
     use HasFactory;
 
@@ -17,7 +19,10 @@ class SaleDetail extends Model
         'quantity',
         'price',
         'total',
+        'note'
     ];
+
+    protected $dates = ['deleted_at'];
 
     public function sale()
     {

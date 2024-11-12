@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Master;
 use App\Http\Controllers\Controller;
 use App\Models\Master\ProductCategory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-
-use LDAP\Result;
+use Illuminate\Support\Facades\Auth;
 
 class ProductCategoryController extends Controller
 {
@@ -52,7 +50,6 @@ class ProductCategoryController extends Controller
 
         return redirect()->route('product_categories.index')->with('success', 'Kategori produk berhasil ditambahkan.');
     }
-
 
     public function show(ProductCategory $productCategory)
     {

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Master;
 use App\Http\Controllers\Controller;
 use App\Models\Master\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+
 
 class EmployeeController extends Controller
 {
@@ -23,14 +25,29 @@ class EmployeeController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:m_employees',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:m_employees',
-            'contact_number' => 'nullable|string|max:15',
+            'phone' => 'nullable|string|max:15',
+            'address' => 'nullable|string',
             'position' => 'required|string|max:255',
             'role' => 'required|in:admin,employee',
         ]);
 
-        Employee::create($request->all());
-        return redirect()->route('employees.index')->with('success', 'Employee added successfully.');
+        $generateCode = Employee::generateCode();
+
+        Employee::create([
+            'code' => $generateCode,
+            'name' => $request->name,
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'position' => $request->position,
+            'role' => $request->role,
+        ]);
+        return redirect()->route('employees.index')->with('success', 'Berhasil menambahkan karyawan.');
     }
 
     public function show(Employee $employee)
@@ -47,19 +64,32 @@ class EmployeeController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:m_employees,email,' . $employee->id,
-            'contact_number' => 'nullable|string|max:15',
+            'username' => 'required|string|max:255|unique:m_employees',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:m_employees',
+            'phone' => 'nullable|string|max:15',
+            'address' => 'nullable|string',
             'position' => 'required|string|max:255',
             'role' => 'required|in:admin,employee',
         ]);
 
-        $employee->update($request->all());
-        return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
+        $employee->update([
+            'name' => $request->name,
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'position' => $request->position,
+            'role' => $request->role,
+        ]);
+
+        return redirect()->route('employees.index')->with('success', 'Berhasil memperbarui karyawan.');
     }
 
     public function destroy(Employee $employee)
     {
         $employee->delete();
-        return redirect()->route('employees.index')->with('success', 'Employee deleted successfully.');
+        return redirect()->route('employees.index')->with('success', 'Karyawan berhasil dihapus.');
     }
 }

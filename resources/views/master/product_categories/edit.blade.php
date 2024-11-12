@@ -27,8 +27,9 @@
                         placeholder="Masukkan keterangan kategori (opsional)">{{ $productCategory->description }}</textarea>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Perbarui</button>
+
             <a href="{{ route('product_categories.index') }}" class="btn btn-secondary">Kembali</a>
+            <button type="submit" class="btn btn-primary">Perbarui</button>
         </form>
     </div>
 @endsection

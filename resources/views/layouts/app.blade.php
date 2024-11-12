@@ -97,6 +97,12 @@
                         <!-- Transaction Section -->
                         <li class="nav-header">TRANSAKSI</li>
                         <li class="nav-item">
+                            <a href="{{ route('product_purchases.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-shopping-bag"></i>
+                                <p>Re-Stock Sepatu</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('sales.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-shopping-cart"></i>
                                 <p>Penjualan Sepatu</p>
@@ -111,13 +117,7 @@
                         <li class="nav-item">
                             <a href="{{ route('product_stock_transactions.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-box"></i>
-                                <>Kelola Stok Sepatu</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('product_purchases.index') }}" class="nav-link">
-                                <i class="nav-icon fas fa-shopping-bag"></i>
-                                <p>Re-Stock Sepatu</p>
+                                <p>Kelola Stok Sepatu</p>
                             </a>
                         </li>
                         <li class="nav-item">

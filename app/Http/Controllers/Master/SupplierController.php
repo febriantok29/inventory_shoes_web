@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
@@ -21,14 +22,47 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:m_suppliers|max:255',
+            'name' => 'required|string|max:255',
+            'code' => 'required|string|max:255|unique:m_suppliers',
             'contact_number' => 'nullable|string|max:15',
             'email' => 'nullable|email|unique:m_suppliers',
             'address' => 'nullable|string',
         ]);
 
+        $inputContactNumber = $request->contact_number;
+        if ($inputContactNumber) {
+            if (!preg_match('/^[0-9]*$/', $inputContactNumber)) {
+                return redirect()->back()->withInput()->with('error', 'Nomor telepon hanya boleh berisi angka.');
+            }
+
+            // Cek apakah awalannya 0 atau 62
+            if (substr($inputContactNumber, 0, 1) != '0' && substr($inputContactNumber, 0, 2) != '62') {
+                return redirect()->back()->withInput()->with('error', 'Nomor telepon harus diawali dengan 0 atau 62.');
+            }
+
+            if (strlen($inputContactNumber) < 9 || strlen($inputContactNumber) > 15) {
+                return redirect()->back()->withInput()->with('error', 'Nomor telepon harus memiliki panjang 9-15 karakter.');
+            }
+        }
+
+        $lowerRequestCode = strtolower($request->code);
+        $existingSupplier = Supplier::whereRaw('LOWER(code) = ?', $lowerRequestCode)->withTrashed()->first();
+
+        if ($existingSupplier) {
+            $existingSupplier->restore();
+
+            $existingSupplier->update([
+                'name' => $request->name,
+                'contact_number' => $request->contact_number,
+                'email' => $request->email,
+                'address' => $request->address,
+            ]);
+
+            return redirect()->route('suppliers.index')->with('success', 'Supplier berhasil dipulihkan dan diperbarui.');
+        }
+
         Supplier::create($request->all());
-        return redirect()->route('suppliers.index')->with('success', 'Supplier created successfully.');
+        return redirect()->route('suppliers.index')->with('success', 'Berhasil menambahkan supplier baru.');
     }
 
     public function show(Supplier $supplier)
@@ -51,12 +85,13 @@ class SupplierController extends Controller
         ]);
 
         $supplier->update($request->all());
-        return redirect()->route('suppliers.index')->with('success', 'Supplier updated successfully.');
+        return redirect()->route('suppliers.index')->with('success', 'Berhasil memperbarui data supplier.');
     }
 
     public function destroy(Supplier $supplier)
     {
+        $supplierName = $supplier->name;
         $supplier->delete();
-        return redirect()->route('suppliers.index')->with('success', 'Supplier deleted successfully.');
+        return redirect()->route('suppliers.index')->with('success', 'Supplier ' . $supplierName . ' berhasil dihapus.');
     }
 }

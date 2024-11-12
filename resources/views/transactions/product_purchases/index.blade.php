@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container">
-        <h1>Product Purchases</h1>
-        <a href="{{ route('product_purchases.create') }}" class="btn btn-primary mb-3">Add New Purchase</a>
+        <h1>Re-Stock Sepatu</h1>
+        <a href="{{ route('product_purchases.create') }}" class="btn btn-primary mb-3">Ajukan Re-Stock Sepatu</a>
 
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
@@ -12,31 +12,31 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Purchase Price</th>
-                    <th>Supplier Name</th>
-                    <th>Purchase Date</th>
-                    <th>Actions</th>
+                    <th>Sepatu</th>
+                    <th>Pemasok</th>
+                    <th>Tanggal Pembelian</th>
+                    <th>Harga Beli</th>
+                    <th>Jumlah</th>
+                    <th>Total</th>
+                    <th>Catatan</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($productPurchases as $purchase)
                     <tr>
-                        <td>{{ $purchase->product_name }}</td>
-                        <td>{{ $purchase->quantity }}</td>
-                        <td>{{ number_format($purchase->purchase_price, 2) }}</td>
-                        <td>{{ $purchase->supplier_name }}</td>
-                        <td>{{ $purchase->purchase_date }}</td>
+                        <td> {{ $purchase->product->name }} </td>
+                        <td> {{ $purchase->supplier->code }} - {{ $purchase->supplier->name }} </td>
+                        <td> {{ $purchase->created_at->format('l, d F Y') }} </td>
+                        {{-- Format `price` to IDR currency "Rp 1.000.000" --}}
+                        <td> Rp {{ number_format($purchase->purchase_price, 0, ',', '.') }} </td>
+                        <td> {{ $purchase->quantity }} </td>
+                        <td> Rp {{ number_format($purchase->total_cost, 0, ',', '.') }} </td>
+                        {{-- If `description` long than 20 characters, show only 20 characters and append "..." --}}
+                        <td> {{ strlen($purchase->description) > 20 ? substr($purchase->description, 0, 20) . '...' : $purchase->description }}
+                        </td>
                         <td>
-                            <a href="{{ route('product_purchases.show', $purchase) }}" class="btn btn-info btn-sm">View</a>
-                            <a href="{{ route('product_purchases.edit', $purchase) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('product_purchases.destroy', $purchase) }}" method="POST"
-                                class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
+                            <a href="{{ route('product_purchases.show', $purchase) }}" class="btn btn-info btn-sm">Lihat</a>
                         </td>
                     </tr>
                 @endforeach

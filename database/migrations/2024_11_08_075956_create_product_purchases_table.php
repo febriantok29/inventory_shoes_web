@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('quantity')->default(1)->comment('Jumlah barang yang dibeli');
             $table->decimal('purchase_price', 15, 2)->default(0)->comment('Harga beli per unit');
             $table->decimal('total_cost', 15, 2)->default(0)->comment('Total biaya pembelian');
+            $table->date('purchase_date')->comment('Tanggal pembelian');
             $table->text('description')->nullable()->comment('Deskripsi transaksi jika diperlukan');
             $table->unsignedBigInteger('created_by')->nullable()->comment('ID user yang membuat data');
             $table->timestamps();

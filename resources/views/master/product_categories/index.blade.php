@@ -33,7 +33,9 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">Hapus</button>
+                                    onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
+                                    Hapus
+                                </button>
                             </form>
                         </td>
                     </tr>
