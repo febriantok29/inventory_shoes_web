@@ -16,7 +16,7 @@ return new class extends Migration
             // In sales named `Invoice`, what is `code` for in this table?
             $table->string('code')->unique()->comment('Otomatis diisi oleh sistem berdasarkan format: PR-<bulan><tahun>/<sales_id>/{increment}. Misal: PR-112021/1/1');
             $table->unsignedBigInteger('sales_id')->comment('ID penjualan yang terkait');
-            $table->unsignedBigInteger('transaction_stock_id')->nullable()->comment('ID transaksi stok yang terkait');
+            $table->date('return_date')->comment('Tanggal pengembalian barang');
             $table->integer('total_quantity')->default(0)->comment('Total barang yang dikembalikan');
             $table->decimal('total_price', 15, 2)->default(0)->comment('Total harga barang yang dikembalikan');
             $table->decimal('total', 15, 2)->default(0)->comment('Total harga dikali jumlah barang yang dikembalikan');
@@ -29,7 +29,6 @@ return new class extends Migration
 
             // Foreign keys
             $table->foreign('sales_id')->references('id')->on('t_sales')->onDelete('cascade');
-            $table->foreign('transaction_stock_id')->references('id')->on('t_product_stock_transactions')->onDelete('set null');
         });
     }
 

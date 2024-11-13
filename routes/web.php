@@ -48,9 +48,12 @@ Route::middleware('auth')->group(function () {
         Route::resource('damaged_products', DamagedProductController::class);
         Route::resource('product_stock_transactions', ProductStockTransactionController::class);
         Route::resource('product_purchases', ProductPurchaseController::class);
-        Route::resource('product_sales_returns', ProductSalesReturnController::class);
-    });
 
+        Route::get('product_sales_returns', [ProductSalesReturnController::class, 'index'])->name('product_sales_returns.index');
+        Route::get('product_sales_returns/select_sale', [ProductSalesReturnController::class, 'selectSale'])->name('product_sales_returns.select_sale');
+        Route::get('product_sales_returns/{sale}/details', [ProductSalesReturnController::class, 'showSaleDetails'])->name('product_sales_returns.show_sale_details');
+        Route::post('product_sales_returns', [ProductSalesReturnController::class, 'store'])->name('product_sales_returns.store');
+    });
     // Report Routes
     Route::prefix('reports')->group(function () {
         Route::get('sales_report', [SalesReportController::class, 'index'])->name('reports.sales_report');

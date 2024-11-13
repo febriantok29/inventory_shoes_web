@@ -28,7 +28,7 @@ class SaleController extends Controller
     {
         $validated = $request->validate([
             'customer_name' => 'required|string',
-            'note' => 'nullable|string',
+            'description' => 'nullable|string',
             'transaction_date' => 'required|date|before_or_equal:today',
             'details' => 'required|array',
             'details.*.product_id' => 'required|exists:m_products,id',
@@ -55,7 +55,7 @@ class SaleController extends Controller
             'total_amount' => 0,
             'total_price' => 0,
             'employee_id' => Auth::id(),
-            'note' => $validated['note'],
+            'note' => $validated['description'],
         ]);
 
         $totalAmount = 0;
@@ -76,7 +76,7 @@ class SaleController extends Controller
                 'note' => $detail['note'],
             ]);
 
-            $productStockTransactionController->addSale($product->id, $detail['quantity'], $detail['note']);
+            $productStockTransactionController->reduceStock($product->id, $detail['quantity'], $detail['note']);
 
             $totalAmount += $detail['quantity'];
             $totalPrice += $total;

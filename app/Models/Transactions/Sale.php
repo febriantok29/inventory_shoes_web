@@ -13,7 +13,7 @@ class Sale extends BaseModel
     use HasFactory, SoftDeletes;
 
     protected $table = 't_sales';
-    protected $fillable = ['invoice', 'employee_id', 'customer_name', 'total_amount', 'total_price', 'note'];
+    protected $fillable = ['invoice', 'employee_id', 'customer_name', 'total_amount', 'total_price', 'note', 'transaction_date'];
     protected $dates = ['deleted_at', 'transaction_date'];
 
     public function details()

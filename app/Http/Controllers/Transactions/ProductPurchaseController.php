@@ -44,7 +44,7 @@ class ProductPurchaseController extends Controller
 
 
         $productStockTransactionController = new ProductStockTransactionController();
-        $productStockTransactionId = $productStockTransactionController->addPurchase($request->product_id, $request->quantity, $request->description);
+        $productStockTransactionId = $productStockTransactionController->addStock($request->product_id, $request->quantity, $request->description);
 
         $request->merge(['transaction_stock_id' => $productStockTransactionId]);
         ProductPurchase::create($request->all());

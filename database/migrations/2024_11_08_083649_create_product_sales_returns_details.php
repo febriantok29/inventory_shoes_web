@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('product_sales_return_id')->comment('ID retur penjualan produk');
             $table->unsignedBigInteger('product_id')->comment('ID produk yang terkait');
+            $table->unsignedBigInteger('transaction_stock_id')->nullable()->comment('ID transaksi stok yang terkait');
             $table->integer('quantity')->default(1)->comment('Jumlah barang yang diretur');
             $table->decimal('price', 15, 2)->comment('Harga produk saat diretur');
             $table->decimal('total', 15, 2)->comment('Total harga produk saat diretur');
@@ -28,6 +29,7 @@ return new class extends Migration
             // Foreign keys
             $table->foreign('product_sales_return_id')->references('id')->on('t_product_sales_returns')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('m_products')->onDelete('cascade');
+            $table->foreign('transaction_stock_id')->references('id')->on('t_product_stock_transactions')->onDelete('set null');
         });
     }
 

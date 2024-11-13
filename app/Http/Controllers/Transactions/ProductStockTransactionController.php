@@ -18,7 +18,7 @@ class ProductStockTransactionController extends Controller
         return view('transactions.product_stock.index', compact('stockTransactions'));
     }
 
-    public function addPurchase(int $productId, int $quantity, string $note = null)
+    public function addStock(int $productId, int $quantity, string $note = null)
     {
         $product = Product::find($productId);
 
@@ -39,7 +39,7 @@ class ProductStockTransactionController extends Controller
         return $productStockTransaction->id;
     }
 
-    public function addSale(int $productId, int $quantity, string $note = null)
+    public function reduceStock(int $productId, int $quantity, string $note = null)
     {
         $product = Product::find($productId);
 

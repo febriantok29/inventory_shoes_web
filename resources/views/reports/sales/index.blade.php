@@ -59,7 +59,7 @@
             <tbody>
                 @foreach ($sales as $sale)
                     <tr>
-                        <td>{{ $sale->sale_date }}</td>
+                        <td>{{ date('l, d F Y H:i', strtotime($sale->transaction_date)) }}</td>
                         <td>{{ $sale->customer_name }}</td>
                         <td>{{ number_format($sale->total_amount, 2) }}</td>
                     </tr>

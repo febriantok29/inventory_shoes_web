@@ -1,43 +1,39 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h1>Product Sales Returns</h1>
-        <a href="{{ route('product_sales_returns.create') }}" class="btn btn-primary mb-3">Add New Sales Return</a>
+    <div class="container mt-5">
+        <h1>Daftar Retur Penjualan</h1>
 
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
-        <table class="table">
+        <a href="{{ route('product_sales_returns.select_sale') }}" class="btn btn-primary mb-4">Buat Retur Penjualan</a>
+
+        <table class="table table-bordered table-striped mt-4">
             <thead>
                 <tr>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Customer Name</th>
-                    <th>Return Reason</th>
-                    <th>Return Date</th>
-                    <th>Actions</th>
+                    <th>Kode Retur</th>
+                    <th>Transaksi Penjualan</th>
+                    <th>Tanggal Retur</th>
+                    <th>Total Barang</th>
+                    <th>Total Harga</th>
+                    <th>Catatan</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($productSalesReturns as $return)
                     <tr>
-                        <td>{{ $return->product_name }}</td>
-                        <td>{{ $return->quantity }}</td>
-                        <td>{{ $return->customer_name }}</td>
-                        <td>{{ $return->return_reason }}</td>
+                        <td>{{ $return->code }}</td>
+                        <td>{{ $return->sales->invoice }}</td>
                         <td>{{ $return->return_date }}</td>
+                        <td>{{ $return->total_quantity }}</td>
+                        <td>Rp {{ number_format($return->total_price, 0, ',', '.') }}</td>
+                        <td>{{ $return->note }}</td>
                         <td>
-                            <a href="{{ route('product_sales_returns.show', $return) }}" class="btn btn-info btn-sm">View</a>
-                            <a href="{{ route('product_sales_returns.edit', $return) }}"
-                                class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('product_sales_returns.destroy', $return) }}" method="POST"
-                                class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
+                            <a href="{{ route('product_sales_returns.show', $return->id) }}"
+                                class="btn btn-info btn-sm">Detail</a>
                         </td>
                     </tr>
                 @endforeach

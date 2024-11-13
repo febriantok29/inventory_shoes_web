@@ -25,7 +25,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="customer_name">Nama Pelanggan</label>
-                            <input type="text" class="form-control" id="customer_name" name="customer_name" required>
+                            <input type="text" class="form-control" id="customer_name" name="customer_name"
+                                value="{{ old('customer_name') }}" required>
                         </div>
                         <div class="col-md-6">
                             <label for="transaction_date">Tanggal</label>
@@ -37,8 +38,8 @@
                     {{-- Add Note --}}
                     <div class="row mt-4">
                         <div class="col-md-12">
-                            <label for="note">Catatan</label>
-                            <textarea class="form-control" id="note" name="note" rows="3" placeholder="Catatan opsional"></textarea>
+                            <label for="description">Catatan</label>
+                            <textarea class="form-control" id="description" name="description" placeholder="Catatan (opsional)">{{ old('description') }}</textarea>
                         </div>
                     </div>
 
@@ -51,25 +52,26 @@
                                 @foreach ($products as $product)
                                     <option value="{{ $product->id }}" data-price="{{ $product->price }}">
                                         {{ $product->code }} - {{ $product->name }} -
-                                        {{ $product->color }}:{{ $product->size }}
+                                        {{ $product->color }}; Ukuran:{{ $product->size }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <label for="quantity">Quantity</label>
+                            <label for="quantity">Jumlah</label>
                             <input type="number" class="form-control" id="quantity" min="1" value="1">
                         </div>
                         <div class="col-md-2">
-                            <label for="price">Price</label>
+                            <label for="price">Harga</label>
                             <input type="text" class="form-control" id="price" readonly>
                         </div>
                         <div class="col-md-3">
                             <label for="note">Catatan</label>
-                            <input type="text" class="form-control" id="note" placeholder="Catatan opsional">
+                            <input type="text" class="form-control" id="note" name="note"
+                                placeholder="Catatan (opsional)">
                         </div>
                         <div class="col-md-2 align-self-end">
-                            <button type="button" class="btn btn-primary btn-block" id="add-item">Add Item</button>
+                            <button type="button" class="btn btn-primary btn-block" id="add-item">Tambah</button>
                         </div>
                     </div>
 
@@ -78,12 +80,12 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Product</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
+                                    <th>Sepatu</th>
+                                    <th>Jumlah</th>
+                                    <th>Harga</th>
                                     <th>Total</th>
                                     <th>Catatan</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="order-items">
@@ -97,7 +99,7 @@
 
                     <!-- Submit Button -->
                     <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-success">Save Sale</button>
+                        <button type="submit" class="btn btn-success">Ajukan Penjualan</button>
                     </div>
                 </form>
             </div>
@@ -124,7 +126,7 @@
             // Add item to table and details container
             document.getElementById("add-item").addEventListener("click", function() {
                 const productId = productSelect.value;
-                const productName = productSelect.options[productSelect.selectedIndex].text.split(" - ")[0];
+                const productName = productSelect.options[productSelect.selectedIndex].text.split(" - ")[1];
                 const price = parseFloat(productSelect.options[productSelect.selectedIndex].getAttribute(
                     "data-price"));
                 const quantity = parseInt(quantityInput.value);
@@ -132,7 +134,7 @@
                 const note = noteInput.value;
 
                 if (!productId) {
-                    alert("Please select a product.");
+                    alert("Silakan pilih sepatu terlebih dahulu!");
                     return;
                 }
 
@@ -144,7 +146,7 @@
                 <td>Rp ${price.toLocaleString()}</td>
                 <td>Rp ${total.toLocaleString()}</td>
                 <td>${note}</td>
-                <td><button type="button" class="btn btn-danger btn-sm remove-item">Delete</button></td>
+                <td><button type="button" class="btn btn-danger btn-sm remove-item">Hapus</button></td>
             `;
 
                 // Append the row to the table body
