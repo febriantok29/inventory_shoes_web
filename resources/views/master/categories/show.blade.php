@@ -1,18 +1,18 @@
 @extends('layouts.app')
 
-@section('title', 'Edit products')
+@section('title', 'Detail categories')
 
-@section('page_title', 'Edit products')
+@section('page_title', 'Detail categories')
 
 @section('content')
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Edit products</h3>
+                <h3 class="card-title">Detail categories</h3>
             </div>
             <div class="card-body">
-                <p>Form untuk mengedit products akan ditampilkan di sini.</p>
+                <p>Detail untuk categories akan ditampilkan di sini.</p>
             </div>
         </div>
     </div>
