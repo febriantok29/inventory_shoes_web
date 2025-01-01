@@ -4,39 +4,19 @@
     <div class="container">
         <h1 class="mb-4 text-center">Tambah Pemasok Baru</h1>
 
-        @if ($errors->any() || session('error'))
-            <div class="alert alert-danger">
-                <ul class="mb-0">
-                    @if (session('error'))
-                        <li>{{ session('error') }}</li>
-                    @endif
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
         <form action="{{ route('suppliers.store') }}" method="POST">
             @csrf
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="name">Nama Pemasok</label>
-                    <input type="text" class="form-control" id="name" name="name"
-                        placeholder="Masukkan nama pemasok" value="{{ old('name') }}" required>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="code">Kode</label>
-                    <input type="text" class="form-control" id="code" name="code"
-                        placeholder="Masukkan kode pemasok" value="{{ old('code') }}" required>
-                </div>
+            <div class="form-group col-md-12">
+                <label for="name">Nama Pemasok</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Masukkan nama pemasok"
+                    value="{{ old('name') }}" required>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="contact_number">No. Telp</label>
-                    <input type="text" class="form-control" id="contact_number" name="contact_number"
-                        placeholder="Masukkan no. telp" value="{{ old('contact_number') }}" required>
+                    <label for="phone">No. Telp</label>
+                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Masukkan no. telp"
+                        value="{{ old('phone') }}" required>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="email">Email</label>

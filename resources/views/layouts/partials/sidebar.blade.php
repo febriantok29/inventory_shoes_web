@@ -21,16 +21,22 @@
                         <p>Kategori Sepatu</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('products.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-shoe-prints"></i>
+                        <p>Sepatu</p>
+                    </a>
+                </li>
                 <!-- Tambahkan menu master lainnya di sini -->
 
                 <!-- Transaksi Section -->
                 <li class="nav-header">TRANSAKSI</li>
-                {{-- <li class="nav-item">
-                    <a href="{{ route('asset_purchases.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-file-alt"></i>
-                        <p>Pembelian Asset</p>
+                <li class="nav-item">
+                    <a href="{{ route('sales.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>Penjualan</p>
                     </a>
-                </li> --}}
+                </li>
                 <!-- Tambahkan menu transaksi lainnya di sini -->
             </ul>
         </nav>

@@ -5,10 +5,6 @@
         <h1>Pemasok</h1>
         <a href="{{ route('suppliers.create') }}" class="btn btn-primary mb-3">Tambah Pemasok Baru</a>
 
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-
         <table class="table">
             <thead>
                 <tr>
@@ -23,7 +19,7 @@
                 @foreach ($suppliers as $supplier)
                     <tr>
                         <td>{{ $supplier->name }}</td>
-                        <td>{{ $supplier->contact_number }}</td>
+                        <td>{{ $supplier->phone }}</td>
                         <td>{{ $supplier->email }}</td>
                         <td>{{ $supplier->address }}</td>
                         <td>
