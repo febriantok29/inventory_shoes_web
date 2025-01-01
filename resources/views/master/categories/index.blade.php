@@ -2,8 +2,6 @@
 
 @section('title', 'Katagori Sepatu')
 
-@section('page_title', 'Daftar Katagori Sepatu')
-
 @section('content')
     <div class="row">
         <div class="col-lg-12">
@@ -11,7 +9,6 @@
                 <div class="card-header">
                     <h3 class="card-title">Daftar Katagori Sepatu</h3>
                     <div class="card-tools">
-                        {{-- Add icon --}}
                         <a href="{{ route('categories.create') }}" class="btn btn-primary btn-sm">
                             <i class="fas fa-plus"></i> Tambah Katagori Baru </a>
                     </div>
@@ -21,7 +18,7 @@
                         <thead>
                             <tr>
                                 <th>SKU</th>
-                                <th>Nama</th>
+                                <th>Kategori</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
