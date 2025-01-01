@@ -27,6 +27,10 @@ class ProductController extends Controller
     {
         $validatedData = $this->validateProduct($request);
 
+        if (!$request->has('details') || empty($request->details)) {
+            return redirect()->back()->withErrors(['details' => 'Detail produk harus diisi!'])->withInput();
+        }
+
         $product = Product::create($validatedData);
 
         if ($request->has('details')) {
@@ -54,6 +58,10 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $validatedData = $this->validateProduct($request, $product->id);
+
+        if (!$request->has('details') || empty($request->details)) {
+            return redirect()->back()->withErrors(['details' => 'Detail produk harus diisi!'])->withInput();
+        }
 
         $details = $this->validateProductDetails($request)['details'];
 
