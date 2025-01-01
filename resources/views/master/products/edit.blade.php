@@ -1,15 +1,18 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Produk')
-
-@section('page_title', 'Edit Produk')
+@section('title', 'Edit Sepatu')
 
 @section('content')
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Edit Produk</h3>
+                    <h3 class="card-title">Edit Sepatu</h3>
+                    <div class="card-tools">
+                        <a href="{{ route('products.index') }}" class="btn btn-sm btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Kembali
+                        </a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('products.update', $product->id) }}" method="POST" id="product-form">
@@ -17,7 +20,7 @@
                         @method('PUT')
 
                         <div class="form-group">
-                            <label for="code">Kode Produk</label>
+                            <label for="code">SKU</label>
                             <input type="text" class="form-control" id="code" name="code"
                                 value="{{ old('code', $product->code) }}" required>
                             @error('code')
@@ -25,17 +28,10 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="name">Nama Produk</label>
+                            <label for="name">Nama Sepatu</label>
                             <input type="text" class="form-control" id="name" name="name"
                                 value="{{ old('name', $product->name) }}" required>
                             @error('name')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Deskripsi</label>
-                            <textarea class="form-control" id="description" name="description">{{ old('description', $product->description) }}</textarea>
-                            @error('description')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
@@ -54,7 +50,13 @@
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
-
+                        <div class="form-group">
+                            <label for="description">Deskripsi</label>
+                            <textarea class="form-control" id="description" name="description">{{ old('description', $product->description) }}</textarea>
+                            @error('description')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
                         <div class="form-group">
                             <label>Detail Produk</label>
                             <table class="table table-bordered" id="details-table">
