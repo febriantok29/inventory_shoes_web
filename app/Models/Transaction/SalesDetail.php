@@ -3,7 +3,6 @@
 namespace App\Models\Transaction;
 
 use App\Models\Master\ProductDetail;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -17,12 +16,6 @@ class SalesDetail extends Model
         'sales_transaction_id',
         'product_detail_id',
         'quantity',
-    ];
-
-    protected $dates = [
-        'created_at',
-        'updated_at',
-        'deleted_at',
     ];
 
     public function sales()
