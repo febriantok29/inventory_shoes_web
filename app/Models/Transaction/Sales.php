@@ -23,30 +23,33 @@ class Sales extends Model
         'transaction_date' => 'datetime',
     ];
 
-    protected $dates = [
-        'transaction_date',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-
     public function details()
     {
         return $this->hasMany(SalesDetail::class, 'sales_transaction_id');
     }
 
+    public function formatCurrency($value)
+    {
+        return 'Rp. ' . number_format($value, 0, ',', '.');
+    }
+
     public function getFormattedTotalPriceAttribute()
     {
-        return 'Rp. ' . number_format($this->total_price, 0, ',', '.');
+        return $this->formatCurrency($this->total_price);
     }
 
     public function getFormattedCustomerMoneyAttribute()
     {
-        return 'Rp. ' . number_format($this->customer_money, 0, ',', '.');
+        return $this->formatCurrency($this->customer_money);
     }
 
     public function getFormattedChangeAttribute()
     {
-        return 'Rp. ' . number_format($this->change, 0, ',', '.');
+        return $this->formatCurrency($this->change);
+    }
+
+    public function getFormattedCreatedAtAttribute()
+    {
+        return $this->created_at->translatedFormat('l, d M Y H:i');
     }
 }

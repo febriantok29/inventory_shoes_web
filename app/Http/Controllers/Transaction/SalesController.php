@@ -13,7 +13,7 @@ class SalesController extends Controller
 {
     public function index()
     {
-        $salesTransactions = Sales::all();
+        $salesTransactions = Sales::with('details.productDetail')->get();
         return view('transaction.sales.index', compact('salesTransactions'));
     }
 
@@ -33,22 +33,23 @@ class SalesController extends Controller
             'details.*.quantity' => 'required|integer|min:1',
         ]);
 
-        DB::beginTransaction();
-
-        try {
+        DB::transaction(function () use ($request) {
             $totalItems = 0;
             $totalPrice = 0;
 
-            foreach ($request->details as $detail) {
+            $details = collect($request->details)->map(function ($detail) use (&$totalItems, &$totalPrice) {
                 $productDetail = ProductDetail::findOrFail($detail['product_detail_id']);
                 $totalItems += $detail['quantity'];
                 $totalPrice += $productDetail->price * $detail['quantity'];
-            }
+
+                return [
+                    'product_detail_id' => $productDetail->id,
+                    'quantity' => $detail['quantity'],
+                ];
+            });
 
             if ($request->customer_money < $totalPrice) {
-                return redirect()->back()
-                    ->withErrors(['customer_money' => 'Insufficient customer money.'])
-                    ->withInput();
+                abort(422, 'Uang pelanggan tidak mencukupi.');
             }
 
             $salesTransaction = Sales::create([
@@ -56,35 +57,26 @@ class SalesController extends Controller
                 'total_items' => $totalItems,
                 'total_price' => $totalPrice,
                 'customer_money' => $request->customer_money,
-                'change' => ($request->customer_money) - $totalPrice,
+                'change' => $request->customer_money - $totalPrice,
             ]);
 
-            foreach ($request->details as $detail) {
+            $details->each(function ($detail) use ($salesTransaction) {
                 SalesDetail::create([
                     'sales_transaction_id' => $salesTransaction->id,
                     'product_detail_id' => $detail['product_detail_id'],
                     'quantity' => $detail['quantity'],
                 ]);
 
-                $productDetail = ProductDetail::findOrFail($detail['product_detail_id']);
-                $productDetail->decrement('stock', $detail['quantity']);
-            }
+                ProductDetail::findOrFail($detail['product_detail_id'])->decrement('stock', $detail['quantity']);
+            });
+        });
 
-            DB::commit();
-
-            return redirect()->route('sales.create')
-                ->with('success', 'Transaction successfully saved.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()
-                ->withErrors(['error' => 'An error occurred while saving the transaction.'])
-                ->withInput();
-        }
+        return redirect()->route('sales.index')->with('success', 'Transaksi penjualan berhasil disimpan.');
     }
 
     public function show(string $id)
     {
-        $salesTransaction = Sales::findOrFail($id);
+        $salesTransaction = Sales::with('details.productDetail')->findOrFail($id);
         return view('transaction.sales.show', compact('salesTransaction'));
     }
 }
