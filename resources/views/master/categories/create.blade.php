@@ -26,7 +26,7 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-9">
-                                <label for="name">Nama <span class="text-danger">*</span></label>
+                                <label for="name">Kategori <span class="text-danger">*</span></label>
                                 <input type="text" name="name" id="name"
                                     class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
                                     required>
