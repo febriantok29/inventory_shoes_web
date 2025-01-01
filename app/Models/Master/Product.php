@@ -2,26 +2,26 @@
 
 namespace App\Models\Master;
 
-use App\Models\BaseModel;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Product extends BaseModel
+class Product extends Model
 {
-    use HasFactory, SoftDeletes;
+    use SoftDeletes;
 
     protected $table = 'm_products';
-    protected $fillable = ['code', 'name', 'size', 'color', 'image_path', 'description', 'price', 'stock', 'product_category_id', 'supplier_id'];
-    protected $dates = ['deleted_at'];
+
+    protected $fillable = ['code', 'category_id', 'name', 'description', 'total_stock'];
+
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
     public function category()
     {
-        return $this->belongsTo(ProductCategory::class, 'product_category_id');
+        return $this->belongsTo(Category::class);
     }
 
-    public function supplier()
+    public function details()
     {
-        return $this->belongsTo(Supplier::class, 'supplier_id');
+        return $this->hasMany(ProductDetail::class);
     }
 }

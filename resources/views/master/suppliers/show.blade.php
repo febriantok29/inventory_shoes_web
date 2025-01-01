@@ -7,7 +7,7 @@
             <strong>Name:</strong> {{ $supplier->name }}
         </div>
         <div>
-            <strong>Contact Number:</strong> {{ $supplier->contact_number }}
+            <strong>Contact Number:</strong> {{ $supplier->phone }}
         </div>
         <div>
             <strong>Email:</strong> {{ $supplier->email }}

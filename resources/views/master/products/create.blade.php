@@ -1,96 +1,101 @@
 @extends('layouts.app')
 
+@section('title', 'Tambah Produk')
+
+@section('page_title', 'Tambah Produk')
+
 @section('content')
-    <div class="container">
-        <h1 class="mb-4 text-center">Tambah Sepatu Baru</h1>
-
-        @if ($errors->any() || session('error'))
-            <div class="alert alert-danger">
-                <ul class="mb-0">
-                    @if (session('error'))
-                        <li>{{ session('error') }}</li>
-                    @endif
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <form action="{{ route('products.store') }}" method="POST">
-            @csrf
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="name">Nama Sepatu</label>
-                    <input type="text" class="form-control" id="name" name="name"
-                        placeholder="Masukkan nama sepatu" value="{{ old('name') }}" required>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Tambah Produk</h3>
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="code">SKU</label>
-                    <input type="text" class="form-control" id="code" name="code"
-                        placeholder="Masukkan SKU sepatu" value="{{ old('code') }}" required>
-
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="product_category_id">Kategori</label>
-                    <select class="form-control" id="product_category_id" name="product_category_id" required>
-                        <option selected>Sila Pilih Kategori</option>
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="supplier_id">Pemasok</label>
-                    <select class="form-control" id="supplier_id" name="supplier_id">
-                        <option selected>Sila Pilih Pemasok</option>
-                        @foreach ($suppliers as $supplier)
-                            <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="size">Ukuran</label>
-                    <input type="text" class="form-control" id="size" name="size"
-                        placeholder="Masukkan ukuran sepatu" value="{{ old('size') }}" required>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="color">Warna</label>
-                    <input list="colors" class="form-control" id="color" name="color"
-                        placeholder="Masukkan warna sepatu" value="{{ old('color') }}" required>
-                    <datalist id="colors">
-                        <option value="Merah">
-                        <option value="Biru">
-                        <option value="Hijau">
-                        <option value="Kuning">
-                        <option value="Hitam">
-                        <option value="Putih">
-                    </datalist>
+                <div class="card-body">
+                    <form action="{{ route('products.store') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="code">Kode Produk</label>
+                            <input type="text" name="code" id="code" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Nama Produk</label>
+                            <input type="text" name="name" id="name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Deskripsi</label>
+                            <textarea name="description" id="description" class="form-control"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="category_id">Kategori</label>
+                            <select name="category_id" id="category_id" class="form-control" required>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <h3>Detail Produk</h3>
+                        <div id="product-details">
+                            <div class="product-detail border p-3 mb-3">
+                                <div class="form-group">
+                                    <label for="details[0][size]">Ukuran</label>
+                                    <input type="text" name="details[0][size]" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="details[0][color]">Warna</label>
+                                    <input type="text" name="details[0][color]" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="details[0][stock]">Stok</label>
+                                    <input type="number" name="details[0][stock]" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="details[0][price]">Harga</label>
+                                    <input type="number" name="details[0][price]" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="details[0][note]">Catatan</label>
+                                    <textarea name="details[0][note]" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" id="add-product-detail" class="btn btn-secondary">Tambah Detail Produk</button>
+                        <button type="submit" class="btn btn-primary">Simpan Produk</button>
+                    </form>
                 </div>
             </div>
-
-            <div class="form-group">
-                <label for="price">Harga</label>
-                <input type="number" class="form-control" id="price" name="price" placeholder="Masukkan harga sepatu"
-                    value="{{ old('price') }}" required>
-            </div>
-
-            <div class="form-group">
-                <label for="description">Deskripsi</label>
-                <textarea class="form-control" id="description" name="description" rows="3"
-                    placeholder="Masukkan deskripsi sepatu" required>{{ old('description') }}</textarea>
-            </div>
-
-            <div class="text-center mt-4">
-                <a href="{{ route('products.index') }}" class="btn btn-secondary">Batal</a>
-                <button type="submit" class="btn btn-success px-5">Simpan</button>
-            </div>
-        </form>
+        </div>
     </div>
+
+    <script>
+        document.getElementById('add-product-detail').addEventListener('click', function() {
+            const productDetails = document.getElementById('product-details');
+            const index = productDetails.children.length;
+            const newProductDetail = document.createElement('div');
+            newProductDetail.classList.add('product-detail', 'border', 'p-3', 'mb-3');
+            newProductDetail.innerHTML = `
+                <div class="form-group">
+                    <label for="details[${index}][size]">Ukuran</label>
+                    <input type="text" name="details[${index}][size]" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="details[${index}][color]">Warna</label>
+                    <input type="text" name="details[${index}][color]" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="details[${index}][stock]">Stok</label>
+                    <input type="number" name="details[${index}][stock]" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="details[${index}][price]">Harga</label>
+                    <input type="number" name="details[${index}][price]" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="details[${index}][note]">Catatan</label>
+                    <textarea name="details[${index}][note]" class="form-control"></textarea>
+                </div>
+            `;
+            productDetails.appendChild(newProductDetail);
+        });
+    </script>
 @endsection
