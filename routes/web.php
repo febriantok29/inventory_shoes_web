@@ -10,6 +10,7 @@ Route::get('/', [DashboardController::class, 'index'])->name('home');
 
 // Dashboard Route
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/dashboard/download-report', [DashboardController::class, 'downloadReport'])->name('dashboard.downloadReport');
 
 // Master Data Routes
 Route::prefix('master')->group(function () {
